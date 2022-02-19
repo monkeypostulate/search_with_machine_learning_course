@@ -38,7 +38,6 @@ def process_filters(filters_input):
             display_filters.append("filter.name={}, type={}, key={}".format(filter, type, filter_key))
             applied_filters += "&filter.name={}&{}.type={}&{}.key={}&{}.displayName={}".format(
                 filter, filter, type, filter, filter_key, filter, display_name)
-        #TODO: IMPLEMENT AND SET filters, display_filters and applied_filters.
         # filters get used in create_query below.  display_filters gets used by display_filters.jinja2 and applied_filters gets used by aggregations.jinja2 (and any other links that would execute a search.)
         if type == "range":
             range_filter = ""
@@ -130,13 +129,10 @@ def create_query(user_query, filters, sort="_score", sortDir="desc"):
     match_query_obj = {
         "multi_match": {
             "query": user_query,
-            "fields": ["name^120", "shortDescription^60", "longDescription^5", "department^2","tags","features"]
+            "fields": ["name^240", "shortDescription^60", "longDescription^5", "department^2","tags","features"]
         }
     }
-    if user_query == '*':
-        match_query_obj = {
-            "match_all": {}
-        }
+
 
     query_obj = {
         "size": 10,
@@ -154,7 +150,7 @@ def create_query(user_query, filters, sort="_score", sortDir="desc"):
                     }
                 },
                 "boost_mode": "multiply",
-                "score_mode": "avg",
+                "score_mode": "sum",
                 "functions": [
                     {
                         "field_value_factor": {
