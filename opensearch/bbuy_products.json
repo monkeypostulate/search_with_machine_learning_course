@@ -1,5 +1,35 @@
 {
   "settings": {
-    "index.refresh_interval": "5s"
+    "index.refresh_interval": "5s",
+    "analysis": {
+      "analyzer": {
+        "analyzer_lower_stem": {
+          "type": "custom", 
+          "tokenizer": "standard",
+          "char_filter": [
+            "html_strip"
+          ],
+          "filter": [
+            "porter_stem" ,
+            "asciifolding"
+          ]
+        }
+      }
+     }
+  }
+  ,
+  "mappings": {
+    "properties": {
+      "name":                {"type": "text", "analyzer": "analyzer_lower_stem"},
+      "longDescriptionHtml": {"type": "text", "analyzer": "analyzer_lower_stem"},
+      "subclass":            {"type": "text", "analyzer": "analyzer_lower_stem"},
+      "quantityLimit":       {"type": "float"},
+      "in_stock":            {"type": "boolean"},
+      "category":            {"type": "keyword", "ignore_above": "256"},
+      "salePrice":               {"type": "float"},
+      "regularPrice":               {"type": "float"}
+    }
   }
 }
+
+
