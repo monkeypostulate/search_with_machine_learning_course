@@ -74,7 +74,22 @@ def query():
         query_obj = create_query("*", [], sort, sortDir)
 
     print("query obj: {}".format(query_obj))
-    response = None   # TODO: Replace me with an appropriate call to OpenSearch
+
+
+    q = 'mac'
+    query2 = {
+          'size': 5,
+          'query': {
+            'multi_match': {
+              'query': q,
+              'fields': ['shortDescription^2', 'longDescriptionHtml']
+            }
+          }
+        }
+
+    response =         opensearch.search(body=query_obj,
+                       index='bbuy_products'
+        )   # TODO: Replace me with an appropriate call to OpenSearch
     # Postprocess results here if you so desire
 
     #print(response)
@@ -89,12 +104,23 @@ def query():
 def create_query(user_query, filters, sort="_score", sortDir="desc"):
     print("Query: {} Filters: {} Sort: {}".format(user_query, filters, sort))
     query_obj = {
-        'size': 10,
-        "query": {
-            "match_all": {} # Replace me with a query that both searches and filters
-        },
-        "aggs": {
-            #TODO: FILL ME IN
+        'size': 2,
+         "query": {
+                 "bool": {
+      "must": {
+            'multi_match': {
+              'query': user_query,
+              'fields': ["name^100", "shortDescription^50", "longDescription^10", "department"]
+                            }
+                   }
+                 ,
+                 "filter": {
+        "term": {
+          "department": "computers"
         }
+      }}
+         },
+  
+        "aggs": {}
     }
     return query_obj
