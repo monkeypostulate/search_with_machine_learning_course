@@ -1,6 +1,6 @@
 {
   "settings": {
-    "index.refresh_interval": "5s",
+    "number_of_shards": 1,
     "analysis": {
       "analyzer": {
         "analyzer_lower_stem": {
@@ -16,8 +16,7 @@
         }
       }
      }
-  }
-  ,
+  },
   "mappings": {
     "properties": {
       "name":                {"type": "text", "analyzer": "analyzer_lower_stem"},
@@ -26,10 +25,7 @@
       "quantityLimit":       {"type": "float"},
       "in_stock":            {"type": "boolean"},
       "category":            {"type": "keyword", "ignore_above": "256"},
-      "salePrice":               {"type": "float"},
-      "regularPrice":               {"type": "float"}
+      "price":               {"type": "float"}
     }
   }
 }
-
-
