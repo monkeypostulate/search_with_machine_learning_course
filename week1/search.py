@@ -27,7 +27,6 @@ def process_filters(filters_input):
         applied_filters += "&filter.name={}&{}.type={}&{}.displayName={}".format(filter, filter, type, filter,
                                                                                  display_name)
         #TODO: IMPLEMENT AND SET filters, display_filters and applied_filters.
-        # filters get used in create_query below.  display_filters gets used by display_filters.jinja2 and applied_filters gets used by aggregations.jinja2 (and any other links that would execute a search.)
         if type == "range":
             pass
         elif type == "terms":
