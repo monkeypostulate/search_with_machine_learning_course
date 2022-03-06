@@ -1,10 +1,13 @@
 import os
+import random
 import xml.etree.ElementTree as ET
 import argparse
 from pathlib import Path
+import nltk
+nltk.download('punkt')
 
 
-directory = r'/workspace/datasets/product_data/products/'
+directory = r'/workspace/search_with_machine_learning_course/data/pruned_products'
 parser = argparse.ArgumentParser(description='Process some integers.')
 general = parser.add_argument_group("general")
 general.add_argument("--input", default=directory,  help="The directory containing the products")
@@ -26,8 +29,13 @@ if args.input:
 sample_rate = args.sample_rate
 
 def transform_training_data(name):
-    # IMPLEMENT
-    return name.replace('\n', ' ')
+    # IMPLEMENT 
+    name = name.translate ({ord(c): " " for c in "®™!@#$%^&*()[]{};:,./<>?\|`~-=_+"})
+    tokens = nltk.word_tokenize(name)
+    new_words = [w.lower() for w in tokens if w.isalnum()]
+    normalized = ' '.join([token.lower() for token in new_words])
+    return normalized.replace('\n', ' ')
+#    return name.replace('\n', ' ')
 
 # Directory for product data
 
